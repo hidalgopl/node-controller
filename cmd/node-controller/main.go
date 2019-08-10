@@ -53,9 +53,7 @@ func (c *Controller) processNextItem() bool {
 	return true
 }
 
-// syncToStdout is the business logic of the controller. In this controller it simply prints
-// information about the node to stdout. In case an error happened, it has to simply return the error.
-// The retry logic should not be part of the business logic.
+// processNode gets Node and adds label if node is running on target OS.
 func (c *Controller) processNode(key string) error {
 	obj, exists, err := c.indexer.GetByKey(key)
 	if err != nil {
@@ -64,13 +62,9 @@ func (c *Controller) processNode(key string) error {
 	}
 
 	if !exists {
-		// Below we will warm up our cache with a Pod, so that we will see a delete for one node
 		fmt.Printf("Node %s does not exist anymore\n", key)
 	} else {
-		// Note that you also have to check the uid if you have a local controlled resource, which
-		// is dependent on the actual instance, to detect that a Node was recreated with the same name
 		if c.nodeUpdater.IsNodeWithOS(obj.(*v1.Node)) {
-			fmt.Printf("Update for Node %s\n", obj.(*v1.Node).GetName())
 			c.nodeUpdater.Update(context.TODO(), obj.(*v1.Node))
 		}
 	}

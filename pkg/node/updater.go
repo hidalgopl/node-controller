@@ -2,6 +2,7 @@ package node
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"strings"
 
@@ -49,6 +50,7 @@ func (nu *NodeUpdater) AddLabel(node *v1.Node) *v1.Node {
 		return node
 	}
 	node.ObjectMeta.Labels[nu.Options.LabelKey] = nu.Options.LabelValue
+	fmt.Printf("Update for Node %s\n", node.GetName())
 	return node
 }
 

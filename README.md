@@ -28,4 +28,4 @@ However, in `manifest.yaml` deployment expects `hidalgopl/node-controller:latest
 
 
 ## Credits
-Based hugely on go-client example [workqueue](https://github.com/kubernetes/client-go/tree/master/examples/workqueue).
+Big part is shameless copy of go-client example [workqueue](https://github.com/kubernetes/client-go/tree/master/examples/workqueue).
