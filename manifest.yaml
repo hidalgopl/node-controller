@@ -1,0 +1,67 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: node-controller-role
+rules:
+- verbs:
+  - get
+  - update
+  - list
+  - watch
+  resources:
+  - nodes
+  apiGroups:
+  - ""
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: node-controller-rolebinding
+subjects:
+- kind: ServiceAccount
+  name: node-controller-service-account
+  apiGroup: rbac.authorization.k8s.io
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: node-controller-role
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: node-controller-service-account
+---
+
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: node-controller
+  labels:
+    app: node-controller
+    owner: "Pawel-Bojanowski"
+spec:
+  revisionHistoryLimit: 1
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: node-controller
+    spec:
+      serviceAccountName: node-controller-service-account
+      containers:
+      - name: controller
+        image: node-controller:latest
+        imagePullPolicy: always
+        resources:
+          limits:
+            cpu: 2
+            memory: 512Mi
+          requests:
+            cpu: 1
+            memory: 256Mi
