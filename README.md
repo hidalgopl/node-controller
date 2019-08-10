@@ -1,3 +1,10 @@
+# Node-label controller
+This is K8s node controller which watches a list of nodes and if new node with specific OS is added (customizable via `TARGET_OS`) it gets labelled with customizable label (`LABEL_KEY`) with value (`LABEL_VALUE`)
+
+## Resources manifest
+`manifest.yaml` contains definitions for ServiceAccount, ClusterRole, ClusterRoleBinding and Deployment of controller.
+To create all those in your cluster, run `kubectl apply -f manifest.yaml`
+
 ## Running tests
 To test node package, run `make test`.
 
