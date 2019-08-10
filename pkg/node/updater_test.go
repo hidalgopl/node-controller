@@ -2,12 +2,13 @@ package node
 
 import (
 	"context"
+	"testing"
+
 	"github.com/stretchr/testify/assert"
 	"k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	fakecorev1 "k8s.io/client-go/kubernetes/typed/core/v1/fake"
 	core "k8s.io/client-go/testing"
-	"testing"
 )
 
 func TestOptionsFromEnvDefaults(t *testing.T) {
@@ -56,10 +57,10 @@ func TestAddLabelToNode(t *testing.T) {
 				},
 			}
 			nodeUpdater := &NodeUpdater{
-				Client:  fakeClient,
+				Client: fakeClient,
 				Options: Options{
-					TargetOS: "",
-					LabelKey: tc.labelKey,
+					TargetOS:   "",
+					LabelKey:   tc.labelKey,
 					LabelValue: tc.labelVal,
 				},
 			}
@@ -91,10 +92,10 @@ func TestUpdateNode(t *testing.T) {
 	for _, tc := range tt {
 		t.Run(tc.testName, func(t *testing.T) {
 			nodeUpdater := &NodeUpdater{
-				Client:       fakeClient,
+				Client: fakeClient,
 				Options: Options{
-					LabelKey: tc.labelKey,
-					TargetOS: "",
+					LabelKey:   tc.labelKey,
+					TargetOS:   "",
 					LabelValue: tc.labelVal,
 				},
 			}
@@ -150,9 +151,9 @@ func TestIsNodeWithOS(t *testing.T) {
 			nU := &NodeUpdater{
 				Client: fakeClient,
 				Options: Options{
-					TargetOS: tc.wantedNodeOsImage,
+					TargetOS:   tc.wantedNodeOsImage,
 					LabelValue: "",
-					LabelKey: "",
+					LabelKey:   "",
 				},
 			}
 			result := nU.IsNodeWithOS(node)

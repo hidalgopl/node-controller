@@ -2,11 +2,12 @@ package node
 
 import (
 	"context"
+	"log"
+	"strings"
+
 	"github.com/kelseyhightower/envconfig"
 	"k8s.io/api/core/v1"
 	corev1client "k8s.io/client-go/kubernetes/typed/core/v1"
-	"log"
-	"strings"
 )
 
 const envPrefix = ""

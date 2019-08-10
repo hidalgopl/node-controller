@@ -3,9 +3,10 @@ package main
 import (
 	"context"
 	"fmt"
+	"time"
+
 	"github.com/hidalgopl/node-controller/pkg/node"
 	"k8s.io/client-go/rest"
-	"time"
 
 	"k8s.io/klog"
 
