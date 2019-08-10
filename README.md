@@ -15,7 +15,7 @@ To test node package, run `make test`.
 To build it locally use `make build`. Binary will be placed in `current-directory/bin/node-controller`.
 ### Docker image
 To build docker image locally use `make container`. Container will be tagged `node-controller:latest`
-
+However, in `manifest.yaml` deployment expects `hidalgopl/node-controller:latest` image. Retag it, push it to docker hub and edit deployment.Image if you want to use it in your cluster.
 
 
 ## Environment variables
