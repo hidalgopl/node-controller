@@ -19,8 +19,8 @@ metadata:
   name: node-controller-rolebinding
 subjects:
 - kind: ServiceAccount
+  namespace: "default"
   name: node-controller-service-account
-  apiGroup: rbac.authorization.k8s.io
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
@@ -54,10 +54,12 @@ spec:
         app: node-controller
     spec:
       serviceAccountName: node-controller-service-account
+      imagePullSecrets:
+        - name: docker-secret
       containers:
       - name: controller
-        image: node-controller:latest
-        imagePullPolicy: always
+        image: hidalgopl/node-controller:latest
+        imagePullPolicy: Always
         resources:
           limits:
             cpu: 2
