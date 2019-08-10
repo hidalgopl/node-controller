@@ -11,7 +11,7 @@ import (
 	core "k8s.io/client-go/testing"
 )
 
-func TestOptionsFromEnvDefaults(t *testing.T) {
+func TestOptionsFromEnv(t *testing.T) {
 	tt := []struct {
 		testName           string
 		expectedLabelKey   string
@@ -36,7 +36,7 @@ func TestOptionsFromEnvDefaults(t *testing.T) {
 
 }
 
-func TestAddLabelToNode(t *testing.T) {
+func TestNodeUpdater_AddLabel(t *testing.T) {
 	tt := []struct {
 		testName string
 		labelKey string
@@ -64,7 +64,7 @@ func TestAddLabelToNode(t *testing.T) {
 					LabelValue: tc.labelVal,
 				},
 			}
-			labeledNode := nodeUpdater.AddLabel(node, tc.labelVal)
+			labeledNode := nodeUpdater.AddLabel(node)
 			nodeLabels := labeledNode.GetLabels()
 			assert.Equal(t, nodeLabels[tc.labelKey], tc.labelVal)
 
@@ -72,7 +72,7 @@ func TestAddLabelToNode(t *testing.T) {
 	}
 }
 
-func TestUpdateNode(t *testing.T) {
+func TestNodeUpdater_Update(t *testing.T) {
 	tt := []struct {
 		testName string
 		labelKey string
@@ -112,7 +112,7 @@ func TestUpdateNode(t *testing.T) {
 	}
 }
 
-func TestIsNodeWithOS(t *testing.T) {
+func TestNodeUpdater_IsNodeWithOS(t *testing.T) {
 	tt := []struct {
 		testName          string
 		nodeOSImage       string
@@ -163,5 +163,56 @@ func TestIsNodeWithOS(t *testing.T) {
 	}
 }
 
+func TestNodeUpdater_AlreadyHasLabelSet(t *testing.T) {
+	tt := []struct {
+		testName       string
+		labels         map[string]string
+		expectedResult bool
+		expectedLabels map[string]string
+	}{
+		{
+			testName:       "node already has correct label and value",
+			labels:         map[string]string{"label-key": "label-value",},
+			expectedResult: true,
+		},
+		{
+			testName:       "node doesnt have label",
+			labels:         map[string]string{},
+			expectedResult: false,
+		},
+		{
+			testName:       "node has correct label but wrong value",
+			labels:         map[string]string{"label-key": "wrong-label-value"},
+			expectedResult: false,
+		},
+	}
+	for _, tc := range tt {
+		t.Run(tc.testName, func(t *testing.T) {
+			node := &v1.Node{
+				Status: v1.NodeStatus{
+					NodeInfo: v1.NodeSystemInfo{
+						OSImage: "target-os",
+					},
+				},
+				ObjectMeta: metav1.ObjectMeta{
+					Name:   "my-node",
+					Labels: tc.labels,
+				},
+			}
+			fakeClient := &fakecorev1.FakeCoreV1{Fake: &core.Fake{}}
+			nU := &NodeUpdater{
+				Client: fakeClient,
+				Options: Options{
+					TargetOS:   "target-os",
+					LabelValue: "label-value",
+					LabelKey:   "label-key",
+				},
+			}
+			result := nU.AlreadyHasLabelSet(node)
+			assert.Equal(t, tc.expectedResult, result)
+
+		})
+	}
+}
 
 // Test AlreadyHasLabelSet
