@@ -33,7 +33,7 @@ metadata:
   name: node-controller-service-account
 ---
 
-apiVersion: apps/v1
+apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: node-controller

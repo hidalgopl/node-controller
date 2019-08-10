@@ -172,7 +172,7 @@ func TestNodeUpdater_AlreadyHasLabelSet(t *testing.T) {
 	}{
 		{
 			testName:       "node already has correct label and value",
-			labels:         map[string]string{"label-key": "label-value",},
+			labels:         map[string]string{"label-key": "label-value"},
 			expectedResult: true,
 		},
 		{
@@ -214,5 +214,3 @@ func TestNodeUpdater_AlreadyHasLabelSet(t *testing.T) {
 		})
 	}
 }
-
-// Test AlreadyHasLabelSet
