@@ -64,9 +64,7 @@ func (c *Controller) processNode(key string) error {
 	if !exists {
 		fmt.Printf("Node %s does not exist anymore\n", key)
 	} else {
-		if c.nodeUpdater.IsNodeWithOS(obj.(*v1.Node)) {
-			c.nodeUpdater.Update(context.TODO(), obj.(*v1.Node))
-		}
+		c.nodeUpdater.Update(context.TODO(), obj.(*v1.Node))
 	}
 	return nil
 }

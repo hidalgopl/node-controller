@@ -34,7 +34,7 @@ type NodeUpdater struct {
 	Options Options
 }
 
-func (nu *NodeUpdater) IsNodeWithOS(node *v1.Node) bool {
+func (nu *NodeUpdater) isNodeWithOS(node *v1.Node) bool {
 	osImage := node.Status.NodeInfo.OSImage
 	if !strings.Contains(osImage, nu.Options.TargetOS) {
 		return false
@@ -68,6 +68,9 @@ func (nu *NodeUpdater) alreadyHasLabelSet(node *v1.Node) bool {
 }
 
 func (nu *NodeUpdater) Update(ctx context.Context, node *v1.Node) *v1.Node {
+	if !nu.isNodeWithOS(node) {
+		return node
+	}
 	node = nu.addLabel(node)
 	result, err := nu.Client.Nodes().Update(node)
 	if err != nil {

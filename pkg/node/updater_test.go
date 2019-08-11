@@ -112,7 +112,7 @@ func TestNodeUpdater_Update(t *testing.T) {
 	}
 }
 
-func TestNodeUpdater_IsNodeWithOS(t *testing.T) {
+func TestNodeUpdater_isNodeWithOS(t *testing.T) {
 	tt := []struct {
 		testName          string
 		nodeOSImage       string
@@ -156,7 +156,7 @@ func TestNodeUpdater_IsNodeWithOS(t *testing.T) {
 					LabelKey:   "",
 				},
 			}
-			result := nU.IsNodeWithOS(node)
+			result := nU.isNodeWithOS(node)
 			assert.Equal(t, tc.expected, result)
 
 		})
