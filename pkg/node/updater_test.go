@@ -36,7 +36,7 @@ func TestOptionsFromEnv(t *testing.T) {
 
 }
 
-func TestNodeUpdater_AddLabel(t *testing.T) {
+func TestNodeUpdater_addLabel(t *testing.T) {
 	tt := []struct {
 		testName string
 		labelKey string
@@ -64,7 +64,7 @@ func TestNodeUpdater_AddLabel(t *testing.T) {
 					LabelValue: tc.labelVal,
 				},
 			}
-			labeledNode := nodeUpdater.AddLabel(node)
+			labeledNode := nodeUpdater.addLabel(node)
 			nodeLabels := labeledNode.GetLabels()
 			assert.Equal(t, nodeLabels[tc.labelKey], tc.labelVal)
 
@@ -163,7 +163,7 @@ func TestNodeUpdater_IsNodeWithOS(t *testing.T) {
 	}
 }
 
-func TestNodeUpdater_AlreadyHasLabelSet(t *testing.T) {
+func TestNodeUpdater_alreadyHasLabelSet(t *testing.T) {
 	tt := []struct {
 		testName       string
 		labels         map[string]string
@@ -208,7 +208,7 @@ func TestNodeUpdater_AlreadyHasLabelSet(t *testing.T) {
 					LabelKey:   "label-key",
 				},
 			}
-			result := nU.AlreadyHasLabelSet(node)
+			result := nU.alreadyHasLabelSet(node)
 			assert.Equal(t, tc.expectedResult, result)
 
 		})
